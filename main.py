@@ -25,7 +25,12 @@ for i in range(len(info_id)):
     info_list[info_id[i]] = [info_name[i], info_surname[i], info_age[i], info_passport[i], info_address[i]]
 print(info_list)
 
+all_question_list = ["Your favourite football team?", "Your liked clothes brand?", "Your height?",
+                     "Your weight?", "Your favourite technical brand?"]
+
+
 print("Welcome!!!")
+
 choosing = int(input("1-Login page. 2-Register page:    "))
 
 
@@ -35,12 +40,24 @@ def see_records(login_id):
 
 
 def change_password(username):
-    print("Changing")
-    q1 = "Your favourite football team?"
-    q2 = "Your liked clothes brand?"
-    q3 = "Your height?"
-    q4 = "Your weight?"
-    q5 = "Your favourite technical brand?"
+    changed = False
+    df = pd.read_csv("User_1.csv")
+    for i in range(len(all_question_list)):
+        print(i + 1, all_question_list[i])
+    q = int(input("Which question do you choose:  "))
+    your_answer = input("Your answer:  ")
+    for i in range(len(user_id)):
+        if user_username[i] == username and user_question[i] == all_question_list[q - 1] and user_answer[
+            i] == your_answer:
+            new_psw = input("Enter new Password:  ")
+            df.loc[df["Username"] == username, "PSW"] = new_psw
+            df.to_csv("User_1.csv", index=False)
+            changed = True
+            break
+    if changed:
+        print("Successfully password changed!!!")
+    else:
+        print("Your question type or your answer is wrong!!!")
 
 
 def login():
@@ -86,3 +103,5 @@ elif choosing == 2:
     register()
 else:
     print("You entered neither 1 nor 2!!!")
+
+# LOGIN PAGE DONE
